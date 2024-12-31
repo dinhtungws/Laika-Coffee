@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Manage Orders</h2>
+
+{% if orders %}
+<ul>
+    {% for order in orders %}
+    <li>
+        <h3>Order #{{ order['id'] }}</h3>
+        <p><strong>Customer:</strong> {{ order['customer_name'] }}</p>
+        <p><strong>Note:</strong> {{ order['note'] }}</p>
+        <p><strong>Total:</strong> {{ order['total_price'] }} VND</p>
+        <h4>Items:</h4>
+        <ul>
+            {% for item in order['items'] %}
+            <li>{{ item['name'] }} - {{ item['quantity'] }} x {{ item['price'] }} VND</li>
+            {% endfor %}
+        </ul>
+        <p><strong>Status:</strong> {{ order['status'] }}</p>
+        <form method="POST" action="{{ url_for('place_order', order_id=order['id']) }}">
+            <select name="status">
+                <option value="Đang chờ xử lý" {% if order['status'] == 'Đang chờ xử lý' %}selected{% endif %}>Đang chờ xử lý</option>
+                <option value="Đang giao hàng" {% if order['status'] == 'Đang giao hàng' %}selected{% endif %}>Đang giao hàng</option>
+                <option value="Hoàn thành" {% if order['status'] == 'Hoàn thành' %}selected{% endif %}>Hoàn thành</option>
+            </select>
+            <button type="submit">Update</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No orders available.</p>
+{% endif %}
+{% endblock %}

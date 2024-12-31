@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Your Cart</h2>
+<ul>
+    {% for item in cart %}
+    <li>
+        <h3>{{ item['name'] }}</h3>
+        <p>Price: {{ item['price'] }} VND</p>
+        <p>Quantity: {{ item['quantity'] }}</p>
+    </li>
+    {% endfor %}
+</ul>
+<p>Total Price: {{ total_price }} VND</p>
+<form method="POST" action="{{ url_for('place_order') }}">
+    <label for="customer_name">Your Name:</label>
+    <input type="text" id="customer_name" name="customer_name" required>
+    <label for="note">Note:</label>
+    <textarea id="note" name="note"></textarea>
+    <button type="submit">Place Order</button>
+</form>
+{% endblock %}
